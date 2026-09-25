@@ -41,7 +41,7 @@ class TestPhase3(unittest.TestCase):
         )
         self.assertIn("Application: Backend Engineer", content_with_jd["subject"])
         self.assertIn("TechCorp", content_with_jd["body"])
-        self.assertIn("Software Engineer", content_with_jd["body"])
+        self.assertIn(self.profile.experience.current_job_title, content_with_jd["body"])
 
         # 2. Without JD
         content_no_jd = engine.generate_email_content(

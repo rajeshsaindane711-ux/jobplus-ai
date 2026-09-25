@@ -5,12 +5,13 @@ from pypdf import PdfReader
 from src.utils.logger import logger
 
 COMMON_TECH_SKILLS = [
-    "python", "java", "javascript", "typescript", "c++", "c#", "golang", "rust",
-    "react", "angular", "vue", "next.js", "node.js", "express", "django", "fastapi", "flask",
-    "spring", "spring boot", "sql", "postgresql", "mysql", "mongodb", "redis",
-    "docker", "kubernetes", "aws", "azure", "gcp", "ci/cd", "git", "linux",
-    "machine learning", "deep learning", "nlp", "llm", "ai", "pandas", "numpy",
-    "data science", "rest api", "graphql", "microservices", "html", "css", "tailwind"
+    "python", "java", "golang", "bash", "shell", "linux", "git",
+    "docker", "kubernetes", "k8s", "helm", "terraform", "ansible", "jenkins",
+    "ci/cd", "argo cd", "prometheus", "grafana", "elk", "datadog",
+    "kafka", "confluent kafka", "zookeeper", "rabbitmq", "redis",
+    "aws", "azure", "gcp", "cloudformation", "iam", "s3", "ec2", "eks", "aks",
+    "devops", "sre", "platform engineering", "microservices", "rest api",
+    "sql", "postgresql", "mysql", "mongodb"
 ]
 
 class ResumeMatcher:

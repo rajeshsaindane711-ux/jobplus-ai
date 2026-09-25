@@ -1,24 +1,30 @@
 # JobPilot AI - Search Criteria & Operational Limits
 search:
   keywords:
-    - "Python Developer"
-    - "Backend Engineer"
-    - "Full Stack Developer"
+    - "DevOps Engineer"
+    - "SRE Engineer"
+    - "Platform Engineer"
+    - "Kafka Administrator"
+    - "AWS DevOps Engineer"
+    - "Azure DevOps Engineer"
   locations:
-    - "Bengaluru"
+    - "Pune"
     - "Remote"
+    - "Bengaluru"
     - "Hyderabad"
-  experience_min_years: 1
-  experience_max_years: 4
+    - "Mumbai"
+  experience_min_years: 3
+  experience_max_years: 7
   work_modes:
     - "Remote"
     - "Hybrid"
+    - "Onsite"
 
 platforms:
   naukri:
     enabled: true
     daily_limit: 30 # Maximum applications per day
-    auto_apply: true # 1-click apply when possible
+    auto_apply: true
     skip_already_applied: true
   linkedin:
     enabled: true
@@ -28,6 +34,6 @@ platforms:
 
 safety:
   min_delay_seconds: 3 # Minimum delay between actions
-  max_delay_seconds: 7 # Maximum randomized delay
-  headless: false # Run with visible browser for safety & human review
+  max_delay_seconds: 6 # Maximum randomized delay
+  headless: false # Run with visible browser
   take_screenshots_on_apply: true

@@ -215,10 +215,11 @@ def cmd_test_resume(args):
 
     # Test match score against sample jobs
     test_jobs = [
-        "Senior Python Developer (Django, FastAPI, AWS)",
-        "Full Stack Web Developer (React, Node.js)",
-        "Sales & Business Development Representative",
+        "Senior AWS DevOps Engineer (Kubernetes, Terraform, CI/CD)",
+        "Site Reliability Engineer (SRE) - Cloud Platform",
+        "Kafka Administrator / Platform Engineer",
         "Junior Python Intern",
+        "Sales & Business Development Representative",
     ]
 
     table = Table(title="Sample Job Relevance Match Scores", show_header=True, header_style="bold yellow")

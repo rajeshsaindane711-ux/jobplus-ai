@@ -1,42 +1,40 @@
 # JobPilot AI - Candidate Profile & Screening Q&A Bank
 candidate:
-  first_name: "John"
-  last_name: "Doe"
-  email: "john.doe@example.com"
-  phone: "9876543210"
+  first_name: "Rajesh"
+  last_name: "Saindane"
+  full_name: "Rajesh Madhukar Saindane"
+  email: "rajeshsaindane264@gmail.com"
+  phone: "8830807939"
   phone_country_code: "+91"
-  linkedin_profile: "https://www.linkedin.com/in/johndoe"
-  github_profile: "https://github.com/johndoe"
-  portfolio_url: "https://johndoe.dev"
-  current_location: "Bangalore, India"
+  linkedin_profile: "https://www.linkedin.com/in/rajesh-saindane"
+  current_location: "Pune, India"
 
 experience:
-  total_years: 3
-  relevant_years: 3
-  current_job_title: "Software Engineer"
-  current_company: "Tech Corp"
-  notice_period_days: 30 # in days (0 for immediate)
-  current_ctc_lakhs: 10.0 # in INR LPA (Lakhs Per Annum)
-  expected_ctc_lakhs: 15.0 # in INR LPA
+  total_years: 5.0
+  relevant_years: 5.0
+  current_job_title: "Digital Engineer"
+  current_company: "DGLiger Consulting"
+  notice_period_days: 30 # Negotiable to 15 days
+  current_ctc_lakhs: 10.0 # 10 LPA
+  expected_ctc_lakhs: 20.0 # 20 LPA
 
 work_authorization:
   authorized_in_india: true
   requires_visa_sponsorship: false
-  willing_to_relocate: true
+  willing_to_relocate: true # Ready to relocate anywhere
 
 screening_answers:
-  # Common screening question patterns & standard responses
-  notice_period: "30 days"
+  notice_period: "30 days (negotiable to 15 days)"
   notice_period_months: "1"
-  serving_notice_period: "No"
+  serving_notice_period: "Yes"
   immediate_joiner: "No"
-  total_experience: "3"
+  total_experience: "5"
   current_ctc: "1000000"
-  expected_ctc: "1500000"
-  preferred_work_mode: "Hybrid" # Remote, Hybrid, or Onsite
-  gender: "Male" # Male, Female, Prefer not to say
+  expected_ctc: "2000000"
+  preferred_work_mode: "Hybrid"
   highest_education: "Bachelor's Degree"
-  gpa: "8.5"
+  current_location: "Pune"
+  relocate: "Yes"
 
 # Path to your latest PDF resume
 resume_path: "data/resume.pdf"
