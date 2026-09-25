@@ -199,7 +199,9 @@ class EmailOutreachEngine:
         user = smtp_user or os.getenv("GMAIL_ADDRESS") or self.profile.candidate.email
         password = smtp_password or os.getenv("GMAIL_APP_PASSWORD")
 
-        pdf_path = resume_path or Path(self.profile.resume_path)
+        from src.utils.resume_manager import ResumeManager
+        manager = ResumeManager(self.profile)
+        pdf_path = resume_path or manager.get_freshened_resume() or Path(self.profile.resume_path)
 
         if not password:
             # Preview / dry-run mode

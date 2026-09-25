@@ -36,5 +36,13 @@ screening_answers:
   current_location: "Pune"
   relocate: "Yes"
 
-# Path to your latest PDF resume
+# Resume Management & Dynamic Freshness Stamping
+resume:
+  directory: "data/resumes"
+  auto_date_freshness: true
+  date_offset_days: 1 # 1 = Yesterday's date (DDMMYYYY), 0 = Today's date
+  base_name: "Rajesh_Saindane_DevOps_SRE_Resume"
+  fallback_path: "data/resume.pdf"
+
+# Legacy fallback path
 resume_path: "data/resume.pdf"

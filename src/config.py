@@ -32,11 +32,19 @@ class WorkAuthorization(BaseModel):
     requires_visa_sponsorship: bool = False
     willing_to_relocate: bool = True
 
+class ResumeConfig(BaseModel):
+    directory: str = "data/resumes"
+    auto_date_freshness: bool = True
+    date_offset_days: int = 1
+    base_name: str = "Rajesh_Saindane_DevOps_SRE_Resume"
+    fallback_path: str = "data/resume.pdf"
+
 class ProfileConfig(BaseModel):
     candidate: CandidateInfo
     experience: ExperienceInfo
     work_authorization: WorkAuthorization = Field(default_factory=WorkAuthorization)
     screening_answers: Dict[str, str] = Field(default_factory=dict)
+    resume: ResumeConfig = Field(default_factory=ResumeConfig)
     resume_path: str = "data/resume.pdf"
 
 class SearchCriteria(BaseModel):

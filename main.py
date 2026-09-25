@@ -238,6 +238,23 @@ def cmd_test_resume(args):
 
     console.print(table)
 
+def cmd_freshen_resume(args):
+    """Generates a date-stamped resume with yesterday's date (DDMMYYYY) for profile freshness."""
+    from src.utils.resume_manager import ResumeManager
+    profile = load_profile()
+    manager = ResumeManager(profile)
+
+    master = manager.find_master_resume()
+    if not master:
+        console.print("[yellow]Notice: No master resume found. Place your master resume PDF in 'data/resumes/'.[/yellow]")
+        return
+
+    console.print(f"[cyan]Master resume located:[/cyan] {master.name}")
+    stamped = manager.get_freshened_resume()
+    if stamped:
+        console.print(f"[bold green]✓ Created date-stamped resume ready for upload:[/bold green] [bold white]{stamped.name}[/bold white]")
+        console.print(f"[dim]Full Path: {stamped}[/dim]\n")
+
 def cmd_update_naukri_resume(args):
     """Uploads updated resume PDF to Naukri profile."""
     from src.browser import BrowserManager
@@ -376,6 +393,9 @@ def main():
     # test-resume
     subparsers.add_parser("test-resume", help="Test resume parsing and auto-match scoring")
 
+    # freshen-resume
+    subparsers.add_parser("freshen-resume", help="Generate yesterday-dated resume copy for profile freshness")
+
     # test-email
     subparsers.add_parser("test-email", help="Preview generated HR email outreach draft")
 
@@ -412,6 +432,8 @@ def main():
         cmd_test_config(args)
     elif args.command == "test-resume":
         cmd_test_resume(args)
+    elif args.command == "freshen-resume":
+        cmd_freshen_resume(args)
     elif args.command == "test-email":
         cmd_test_email(args)
     elif args.command == "update-naukri-resume":

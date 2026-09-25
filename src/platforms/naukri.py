@@ -62,16 +62,19 @@ class NaukriAutomator(BasePlatform):
 
     def update_profile_resume(self, resume_path: Optional[Path] = None) -> bool:
         """
-        Navigates to Naukri profile and uploads the latest master resume PDF.
+        Navigates to Naukri profile and uploads the date-stamped freshened resume PDF.
         Boosts profile freshness and guarantees 1-click apply uses the latest resume.
         """
-        path = resume_path or Path(self.profile.resume_path)
-        if not path.exists():
-            logger.error(f"Resume file not found at: {path}")
+        from src.utils.resume_manager import ResumeManager
+        manager = ResumeManager(self.profile)
+        path = resume_path or manager.get_freshened_resume()
+
+        if not path or not path.exists():
+            logger.error("No master or freshened resume PDF found to upload.")
             return False
 
         abs_path = str(path.resolve())
-        logger.info(f"Updating Naukri profile resume with: {abs_path}")
+        logger.info(f"Updating Naukri profile with fresh resume: {path.name} ({abs_path})")
 
         try:
             self.page.goto("https://www.naukri.com/mnjuser/profile", wait_until="domcontentloaded", timeout=30000)

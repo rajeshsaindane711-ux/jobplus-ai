@@ -135,11 +135,14 @@ class LinkedInAutomator(BasePlatform):
         try:
             # 1. Check for Resume Upload field in this step
             file_input = modal.locator("input[type='file']")
-            resume_path = Path(self.profile.resume_path)
-            if file_input.count() > 0 and resume_path.exists():
-                logger.info(f"[LinkedIn] Attaching updated resume: {resume_path}")
-                file_input.first.set_input_files(str(resume_path.resolve()))
-                self.page.wait_for_timeout(1500)
+            if file_input.count() > 0:
+                from src.utils.resume_manager import ResumeManager
+                manager = ResumeManager(self.profile)
+                fresh_resume = manager.get_freshened_resume()
+                if fresh_resume and fresh_resume.exists():
+                    logger.info(f"[LinkedIn] Attaching date-stamped resume: {fresh_resume.name}")
+                    file_input.first.set_input_files(str(fresh_resume.resolve()))
+                    self.page.wait_for_timeout(1500)
 
             # 2. Handle Radio Groups (Yes / No questions)
             radio_groups = modal.locator("fieldset").all()
