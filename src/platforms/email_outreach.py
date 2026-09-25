@@ -99,10 +99,12 @@ class EmailOutreachEngine:
         job_description: str = "",
     ) -> Dict[str, str]:
         """
-        Builds customized professional subject line and body.
-        Adapts dynamically if job description is present or empty.
-        Handles notice period and CTC requirements intelligently.
+        Builds natural, human-written email content from config/email_templates.yaml.
+        Allows complete user editing of wording and tone.
         """
+        import yaml
+        from src.config import CONFIG_DIR
+
         c = self.profile.candidate
         exp = self.profile.experience
         candidate_name = f"{c.first_name} {c.last_name}".strip()
@@ -110,74 +112,66 @@ class EmailOutreachEngine:
         # Format Notice Period
         if exp.notice_period_days == 0:
             notice_str = "Immediate Joiner"
+            notice_detail = "Immediate joiner (can start right away)"
         else:
-            notice_str = f"{exp.notice_period_days} Days Notice"
-
-        # Subject Line
-        subject = f"Application: {job_title} - {candidate_name} ({exp.total_years} Yrs Exp | {notice_str})"
-
-        # Body Generation
-        salutation = f"Hi hiring team{f' at {company}' if company else ''},"
-
-        # Format notice details: if JD asks for immediate and candidate has notice, explain flexibility
-        notice_detail = ""
-        if "immediate" in job_description.lower():
-            if exp.notice_period_days <= 15:
-                notice_detail = "I am serving my notice period and can join immediately / within 15 days."
+            notice_str = f"{exp.notice_period_days} Days"
+            if "immediate" in job_description.lower() and exp.notice_period_days <= 15:
+                notice_detail = "Serving notice period (can join immediately / within 15 days)"
             else:
-                notice_detail = f"My official notice period is {exp.notice_period_days} days, negotiable for early release."
-        else:
-            notice_detail = f"My notice period is {notice_str}."
+                notice_detail = f"{exp.notice_period_days} days (negotiable for early joining)"
 
+        company_or_team = f"hiring team at {company}" if company else "Hiring Team"
+        company_mention = f" currently at {exp.current_company}" if exp.current_company else ""
+
+        variables = {
+            "name": candidate_name,
+            "first_name": c.first_name,
+            "job_title": job_title,
+            "company": company,
+            "company_or_team": company_or_team,
+            "company_mention": company_mention,
+            "total_years": str(exp.total_years),
+            "current_title": exp.current_job_title or "Software Developer",
+            "current_company": exp.current_company,
+            "location": c.current_location or "India",
+            "notice_period": notice_str,
+            "notice_period_detail": notice_detail,
+            "current_ctc": str(exp.current_ctc_lakhs),
+            "expected_ctc": str(exp.expected_ctc_lakhs),
+            "phone": f"{c.phone_country_code} {c.phone}".strip(),
+            "email": c.email,
+            "linkedin": c.linkedin_profile or "",
+        }
+
+        # Load templates from YAML if available
+        template_file = CONFIG_DIR / "email_templates.yaml"
+        templates = {}
+        if template_file.exists():
+            try:
+                with open(template_file, "r", encoding="utf-8") as f:
+                    templates = yaml.safe_load(f) or {}
+            except Exception as e:
+                logger.warning(f"Could not read email_templates.yaml: {e}")
+
+        # Subject
+        subj_tmpl = templates.get(
+            "subject_template",
+            "Application: {job_title} - {name} ({total_years} Yrs | {notice_period} Notice)",
+        )
+        subject = subj_tmpl.format(**variables)
+
+        # Body selection
         if job_description.strip():
-            # Tailored template matching JD
-            body = f"""{salutation}
-
-I came across your job opening for the position of {job_title} and would like to formally express my interest.
-
-With over {exp.total_years} years of professional experience as a {exp.current_job_title}, I have extensive hands-on expertise building scalable solutions.
-
-Key Profile Highlights:
-• Current Role: {exp.current_job_title} at {exp.current_company or 'Tech Corp'}
-• Total Experience: {exp.total_years} years
-• Current Location: {c.current_location or 'India'}
-• Notice Period: {notice_detail}
-• Current CTC: {exp.current_ctc_lakhs} LPA | Expected CTC: {exp.expected_ctc_lakhs} LPA
-
-I have attached my updated resume for your kind review. I look forward to the opportunity to discuss how my skill set aligns with your team's goals.
-
-Best regards,
-{candidate_name}
-Phone: {c.phone_country_code} {c.phone}
-Email: {c.email}
-LinkedIn: {c.linkedin_profile or ''}
-"""
+            body_tmpl = templates.get("with_job_description")
         else:
-            # Clean fallback cold application template
-            body = f"""{salutation}
+            body_tmpl = templates.get("cold_outreach_no_jd")
 
-I am writing to express my enthusiastic interest in joining your team as a {job_title}.
+        if body_tmpl:
+            body = body_tmpl.format(**variables)
+        else:
+            body = f"Hi {company_or_team},\n\nI saw your opening for {job_title} and wanted to reach out.\n\nThanks,\n{candidate_name}"
 
-I bring {exp.total_years} years of software development experience specializing as a {exp.current_job_title}. 
-
-Brief Overview:
-• Total Experience: {exp.total_years} years
-• Primary Expertise: {exp.current_job_title}
-• Notice Period: {notice_detail}
-• Location: {c.current_location or 'India'}
-
-Please find my updated resume attached to this email. I would welcome the chance to connect for a brief introductory call.
-
-Thank you for your time and consideration.
-
-Warm regards,
-{candidate_name}
-Phone: {c.phone_country_code} {c.phone}
-Email: {c.email}
-LinkedIn: {c.linkedin_profile or ''}
-"""
-
-        return {"subject": subject, "body": body.strip()}
+        return {"subject": subject.strip(), "body": body.strip()}
 
     def send_email(
         self,

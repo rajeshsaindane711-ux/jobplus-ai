@@ -1,0 +1,53 @@
+# JobPilot AI - Human Email Outreach Templates
+# You can freely edit these templates anytime. 
+# Available placeholders:
+# {name}, {first_name}, {job_title}, {company}, {total_years}, {current_title}, 
+# {current_company}, {location}, {notice_period}, {current_ctc}, {expected_ctc}, {phone}, {email}, {linkedin}
+
+subject_template: "Application: {job_title} - {name} ({total_years} Yrs | {notice_period} Notice)"
+
+with_job_description: |
+  Hi {company_or_team},
+
+  Hope you're doing well.
+
+  I saw your post regarding the {job_title} opening and wanted to reach out directly. 
+
+  I have about {total_years} years of hands-on experience as a {current_title}{company_mention}. Based on what you're looking for, my background aligns closely with the requirements.
+
+  Here is a quick snapshot of my details:
+  • Experience: {total_years} years ({current_title})
+  • Notice Period: {notice_period_detail}
+  • Current Location: {location}
+  • Current CTC: {current_ctc} LPA | Expected CTC: {expected_ctc} LPA
+
+  I've attached my resume for your review. Would love to connect for a quick 5-minute chat if you're open to exploring my profile.
+
+  Thanks,
+  {name}
+  Phone: {phone}
+  Email: {email}
+  LinkedIn: {linkedin}
+
+cold_outreach_no_jd: |
+  Hi {company_or_team},
+
+  Hope you're having a good week.
+
+  I noticed you're hiring for {job_title} and wanted to check if you are still looking for candidates.
+
+  I am a {current_title} with {total_years} years of experience{company_mention}. I'm currently looking for new opportunities and my notice period is {notice_period_detail}.
+
+  Quick overview:
+  • Total Experience: {total_years} years
+  • Current Role: {current_title}
+  • Notice Period: {notice_period_detail}
+  • Location: {location}
+
+  My updated resume is attached. Let me know if you'd be open to a quick conversation.
+
+  Thanks and regards,
+  {name}
+  Phone: {phone}
+  Email: {email}
+  LinkedIn: {linkedin}
