@@ -1,0 +1,33 @@
+# JobPilot AI - Search Criteria & Operational Limits
+search:
+  keywords:
+    - "Python Developer"
+    - "Backend Engineer"
+    - "Full Stack Developer"
+  locations:
+    - "Bengaluru"
+    - "Remote"
+    - "Hyderabad"
+  experience_min_years: 1
+  experience_max_years: 4
+  work_modes:
+    - "Remote"
+    - "Hybrid"
+
+platforms:
+  naukri:
+    enabled: true
+    daily_limit: 30 # Maximum applications per day
+    auto_apply: true # 1-click apply when possible
+    skip_already_applied: true
+  linkedin:
+    enabled: true
+    daily_limit: 25 # Safe limit for LinkedIn Easy Apply
+    easy_apply_only: true
+    skip_already_applied: true
+
+safety:
+  min_delay_seconds: 3 # Minimum delay between actions
+  max_delay_seconds: 7 # Maximum randomized delay
+  headless: false # Run with visible browser for safety & human review
+  take_screenshots_on_apply: true

@@ -1,0 +1,14 @@
+# Core Automation
+playwright>=1.42.0
+playwright-stealth>=1.0.6
+
+# Configuration & Data Validation
+pydantic>=2.6.0
+pyyaml>=6.0.1
+pypdf>=4.0.0
+
+# CLI & Formatting
+rich>=13.7.0
+
+# Optional AI Form Solver
+google-genai>=0.1.1

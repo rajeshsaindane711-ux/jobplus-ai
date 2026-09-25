@@ -1,0 +1,83 @@
+from pathlib import Path
+from typing import Dict, List, Optional
+import yaml
+from pydantic import BaseModel, Field
+
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+CONFIG_DIR = PROJECT_ROOT / "config"
+DATA_DIR = PROJECT_ROOT / "data"
+
+class CandidateInfo(BaseModel):
+    first_name: str = ""
+    last_name: str = ""
+    email: str = ""
+    phone: str = ""
+    phone_country_code: str = "+91"
+    linkedin_profile: Optional[str] = None
+    github_profile: Optional[str] = None
+    portfolio_url: Optional[str] = None
+    current_location: str = ""
+
+class ExperienceInfo(BaseModel):
+    total_years: float = 0.0
+    relevant_years: float = 0.0
+    current_job_title: str = ""
+    current_company: str = ""
+    notice_period_days: int = 30
+    current_ctc_lakhs: float = 0.0
+    expected_ctc_lakhs: float = 0.0
+
+class WorkAuthorization(BaseModel):
+    authorized_in_india: bool = True
+    requires_visa_sponsorship: bool = False
+    willing_to_relocate: bool = True
+
+class ProfileConfig(BaseModel):
+    candidate: CandidateInfo
+    experience: ExperienceInfo
+    work_authorization: WorkAuthorization = Field(default_factory=WorkAuthorization)
+    screening_answers: Dict[str, str] = Field(default_factory=dict)
+    resume_path: str = "data/resume.pdf"
+
+class SearchCriteria(BaseModel):
+    keywords: List[str] = Field(default_factory=lambda: ["Python Developer"])
+    locations: List[str] = Field(default_factory=lambda: ["Bengaluru", "Remote"])
+    experience_min_years: int = 0
+    experience_max_years: int = 5
+    work_modes: List[str] = Field(default_factory=lambda: ["Remote", "Hybrid"])
+
+class PlatformConfig(BaseModel):
+    enabled: bool = True
+    daily_limit: int = 25
+    auto_apply: bool = True
+    easy_apply_only: bool = True
+    skip_already_applied: bool = True
+
+class SafetyConfig(BaseModel):
+    min_delay_seconds: int = 3
+    max_delay_seconds: int = 7
+    headless: bool = False
+    take_screenshots_on_apply: bool = True
+
+class AppSearchConfig(BaseModel):
+    search: SearchCriteria
+    platforms: Dict[str, PlatformConfig]
+    safety: SafetyConfig
+
+def load_profile(path: Optional[Path] = None) -> ProfileConfig:
+    """Loads and validates candidate profile from YAML."""
+    file_path = path or (CONFIG_DIR / "profile.yaml")
+    if not file_path.exists():
+        raise FileNotFoundError(f"Profile config not found at: {file_path}")
+    with open(file_path, "r", encoding="utf-8") as f:
+        data = yaml.safe_load(f)
+    return ProfileConfig(**data)
+
+def load_search_config(path: Optional[Path] = None) -> AppSearchConfig:
+    """Loads and validates job search configuration from YAML."""
+    file_path = path or (CONFIG_DIR / "search_config.yaml")
+    if not file_path.exists():
+        raise FileNotFoundError(f"Search config not found at: {file_path}")
+    with open(file_path, "r", encoding="utf-8") as f:
+        data = yaml.safe_load(f)
+    return AppSearchConfig(**data)
