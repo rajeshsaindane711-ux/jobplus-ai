@@ -52,7 +52,14 @@ DATA_DIR = BASE_DIR / "data"
 QA_FILE = DATA_DIR / "learned_qa.json"
 HTML_UI_PATH = BASE_DIR / "ui_mockup.html"
 
+from fastapi.staticfiles import StaticFiles
+
 app = FastAPI(title="JobPlus AI Production Server", version="1.0.0")
+
+# Mount static assets
+ASSETS_DIR = BASE_DIR / "assets"
+if ASSETS_DIR.exists():
+    app.mount("/assets", StaticFiles(directory=str(ASSETS_DIR)), name="assets")
 
 class ATSScoreRequest(BaseModel):
     resume_text: str
