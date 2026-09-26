@@ -257,9 +257,42 @@ class AutonomousFormFiller:
             log.info(f"[Form-Filler] Already applied to {job_url}. Skipping.")
             return {"status": "skipped", "reason": "already_applied", "url": job_url}
 
+        # If page is not attached, launch a real visible Playwright browser session
         if not self.page:
-            return {"status": "simulated", "url": job_url, "ats": ats_type, "company": company, "role": role}
+            try:
+                from playwright.sync_api import sync_playwright
+                with sync_playwright() as p:
+                    browser = p.chromium.launch(
+                        headless=False,
+                        slow_mo=50,
+                        args=["--window-size=1200,850", "--window-position=100,50"]
+                    )
+                    context = browser.new_context(viewport={"width": 1180, "height": 800})
+                    page = context.new_page()
+                    self.page = page
+                    try:
+                        res = self._execute_form_fill_pipeline(company, job_url, role, cover_letter, ats_type, dry_run)
+                        return res
+                    finally:
+                        self.page.wait_for_timeout(2500)
+                        browser.close()
+                        self.page = None
+            except Exception as e:
+                log.warning(f"[Form-Filler] Browser launch fallback: {e}")
+                return {"status": "simulated", "url": job_url, "ats": ats_type, "company": company, "role": role}
 
+        return self._execute_form_fill_pipeline(company, job_url, role, cover_letter, ats_type, dry_run)
+
+    def _execute_form_fill_pipeline(
+        self,
+        company: str,
+        job_url: str,
+        role: str,
+        cover_letter: Optional[str],
+        ats_type: str,
+        dry_run: bool
+    ) -> Dict[str, Any]:
+        """Core form filling execution pipeline."""
         try:
             self.page.goto(job_url, wait_until="domcontentloaded", timeout=45000)
             self.page.wait_for_timeout(2000)

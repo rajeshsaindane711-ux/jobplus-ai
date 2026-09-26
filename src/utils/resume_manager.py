@@ -75,3 +75,10 @@ class ResumeManager:
         except Exception as e:
             logger.warning(f"Failed to create fresh date-stamped copy: {e}. Using master.")
             return master_file
+
+    def prepare_fresh_resume(self, date_offset_days: Optional[int] = None) -> str:
+        """Returns string path to the application-ready resume."""
+        res = self.get_freshened_resume(date_offset_days)
+        if res:
+            return str(res)
+        return str(Path(self.profile.resume_path).resolve())

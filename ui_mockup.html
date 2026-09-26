@@ -831,8 +831,12 @@
                 <span id="hero-label">START 1-CLICK AUTO APPLY</span>
               </button>
 
+              <button onclick="launchLiveBrowserDemo()" class="px-5 py-3.5 rounded-2xl bg-gradient-to-r from-cyan-500 to-indigo-600 hover:brightness-110 text-white text-xs font-black flex items-center justify-center space-x-2 transition shadow-lg shadow-cyan-500/25 cursor-pointer" title="Launches a real visible Chromium window on your Windows desktop so you can watch form filling in real-time.">
+                <span>🎬</span> <span>Launch Live Browser Window</span>
+              </button>
+
               <button onclick="switchTab('terminal')" class="px-4 py-3.5 rounded-2xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 hover:text-white text-xs font-bold flex items-center justify-center space-x-2 transition shadow-sm">
-                <span>🖥️</span> <span>Watch Live Screen</span>
+                <span>🖥️</span> <span>Watch Live Log</span>
               </button>
             </div>
           </div>
@@ -5407,6 +5411,20 @@ linkedin.com/in/rajesh-saindane`
     function saveUploadedResume() {
       alert('Role resume uploaded and registered in routing matrix!');
       closeUploadResumeModal();
+    }
+
+    async function launchLiveBrowserDemo() {
+      showLiveToast("Opening Real Browser 🎬", "Launching visible Chrome window on your desktop screen...", "🚀");
+      appendTerminalLog("[LIVE BROWSER] 🚀 Opening real visible Chrome window on your desktop to demonstrate live form-filling...");
+      try {
+        const res = await fetch('/api/apply/live-demo', { method: 'POST' });
+        const data = await res.json();
+        if (data.status === 'success') {
+          showLiveToast("Live Demo Complete ✓", "Form auto-filling completed on your screen!", "✓");
+        }
+      } catch (err) {
+        appendTerminalLog(`[LIVE BROWSER] Server note: ${err.message}`);
+      }
     }
 
     // ─────────────────────────────────────────────────────────────────
