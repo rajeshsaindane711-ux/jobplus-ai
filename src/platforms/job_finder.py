@@ -43,9 +43,11 @@ class JobFinderEngine:
     ]
 
     SAMPLE_DISCOVERED_JOBS = [
+        # India Direct ATS
         {
             "job_id": "phonepe-sre-lead-01",
             "platform": "direct_ats",
+            "region": "india",
             "title": "Senior SRE / Cloud Platform Engineer",
             "company": "PhonePe",
             "location": "Pune / Bengaluru",
@@ -56,9 +58,11 @@ class JobFinderEngine:
             "description": "Architecting Kubernetes clusters, Kafka streaming, and Terraform AWS multi-cloud automation.",
             "posted_days_ago": 2
         },
+        # India LinkedIn
         {
             "job_id": "zeta-cloud-platform-02",
             "platform": "linkedin",
+            "region": "india",
             "title": "Cloud Platform & SRE Specialist",
             "company": "Zeta Tech",
             "location": "Bengaluru (Remote)",
@@ -69,9 +73,11 @@ class JobFinderEngine:
             "description": "Managing high-scale EKS, ArgoCD GitOps, Prometheus observability, and CI/CD pipelines.",
             "posted_days_ago": 1
         },
+        # India Direct ATS
         {
             "job_id": "confluent-kafka-sre-03",
             "platform": "direct_ats",
+            "region": "india",
             "title": "Staff Platform Engineer (Kafka & Streaming)",
             "company": "Confluent",
             "location": "Remote (India)",
@@ -82,9 +88,11 @@ class JobFinderEngine:
             "description": "Deep expertise in Apache Kafka internal architecture, cluster sizing, and Kubernetes Strimzi operators.",
             "posted_days_ago": 3
         },
+        # India Naukri / Instahyre
         {
             "job_id": "groww-devops-04",
             "platform": "naukri",
+            "region": "india",
             "title": "DevOps Engineer (AWS & Terraform)",
             "company": "Groww",
             "location": "Bengaluru / Pune",
@@ -95,9 +103,11 @@ class JobFinderEngine:
             "description": "Infrastructure as code with Terraform, Docker containerization, and automated canary deployments.",
             "posted_days_ago": 2
         },
+        # India Direct ATS
         {
             "job_id": "razorpay-sre-05",
             "platform": "direct_ats",
+            "region": "india",
             "title": "Site Reliability Engineer II",
             "company": "Razorpay",
             "location": "Bengaluru",
@@ -108,10 +118,56 @@ class JobFinderEngine:
             "description": "Mission-critical payment gateway reliability, SLO/SLI tracking with Prometheus and Datadog.",
             "posted_days_ago": 4
         },
-        # Intentionally filtered test items
+        # Global Remote: Stripe (Greenhouse)
+        {
+            "job_id": "stripe-infra-global-06",
+            "platform": "direct_ats",
+            "region": "global",
+            "title": "Infrastructure Platform Engineer (Global Remote)",
+            "company": "Stripe",
+            "location": "APAC / Worldwide Remote",
+            "url": "https://boards.greenhouse.io/stripe/jobs/6829102",
+            "min_salary": 35.0,
+            "max_salary": 50.0,
+            "experience_required": 5.0,
+            "description": "Designing global distributed cloud infrastructure, AWS multi-region networking, and Kubernetes orchestrations.",
+            "posted_days_ago": 1
+        },
+        # Global Remote: GitLab (Ashby)
+        {
+            "job_id": "gitlab-sre-global-07",
+            "platform": "direct_ats",
+            "region": "global",
+            "title": "Senior Reliability Engineer (All-Remote)",
+            "company": "GitLab",
+            "location": "Worldwide Remote",
+            "url": "https://jobs.ashbyhq.com/gitlab/jobs/9201923",
+            "min_salary": 40.0,
+            "max_salary": 55.0,
+            "experience_required": 5.0,
+            "description": "Managing multi-cloud Kubernetes clusters, Terraform IaC, and zero-downtime deployment pipelines.",
+            "posted_days_ago": 2
+        },
+        # Global Remote: Wellfound / AngelList
+        {
+            "job_id": "wellfound-sre-remote-08",
+            "platform": "global_portals",
+            "region": "global",
+            "title": "Staff DevOps / Cloud Architect",
+            "company": "Supabase",
+            "location": "Remote Global",
+            "url": "https://wellfound.com/jobs/supabase-devops-08",
+            "min_salary": 32.0,
+            "max_salary": 45.0,
+            "experience_required": 5.0,
+            "description": "Postgres clustering, Docker, AWS infrastructure automation, and Terraform provisioning.",
+            "posted_days_ago": 3
+        },
+        # Intentionally filtered test item (WITCH company)
         {
             "job_id": "wipro-helpdesk-99",
             "platform": "naukri",
+            "region": "india",
             "title": "L1 IT Support & Helpdesk Engineer",
             "company": "Wipro",
             "location": "Pune",

@@ -53,9 +53,117 @@
       background: rgba(255, 255, 255, 0.25);
     }
 
+    /* ═════════════════════════════════════════════════════════════════ */
+    /* DYNAMIC AURORA MESH & GLOW ANIMATIONS                             */
+    /* ═════════════════════════════════════════════════════════════════ */
+    .aurora-container {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .aurora-blob-1 {
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      top: -150px;
+      left: -100px;
+      background: radial-gradient(circle, rgba(56, 189, 248, 0.16) 0%, rgba(99, 102, 241, 0.08) 50%, transparent 70%);
+      filter: blur(80px);
+      animation: floatBlob1 18s ease-in-out infinite alternate;
+    }
+    .aurora-blob-2 {
+      position: absolute;
+      width: 700px;
+      height: 700px;
+      top: 25%;
+      right: -150px;
+      background: radial-gradient(circle, rgba(168, 85, 247, 0.15) 0%, rgba(236, 72, 153, 0.06) 50%, transparent 70%);
+      filter: blur(90px);
+      animation: floatBlob2 22s ease-in-out infinite alternate;
+    }
+    .aurora-blob-3 {
+      position: absolute;
+      width: 650px;
+      height: 650px;
+      bottom: -150px;
+      left: 30%;
+      background: radial-gradient(circle, rgba(16, 185, 129, 0.14) 0%, rgba(6, 182, 212, 0.08) 50%, transparent 70%);
+      filter: blur(85px);
+      animation: floatBlob3 20s ease-in-out infinite alternate;
+    }
+    @keyframes floatBlob1 {
+      0% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(120px, 80px) scale(1.15); }
+      100% { transform: translate(40px, 160px) scale(0.95); }
+    }
+    @keyframes floatBlob2 {
+      0% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(-100px, 120px) scale(1.1); }
+      100% { transform: translate(-60px, -80px) scale(0.9); }
+    }
+    @keyframes floatBlob3 {
+      0% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(80px, -100px) scale(1.12); }
+      100% { transform: translate(-80px, -40px) scale(0.95); }
+    }
+
+    /* Cyber Grid Matrix Overlay */
+    .grid-matrix {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 48px 48px;
+    }
+
+    /* Neon Border Moving Gradient */
+    .neon-border-box {
+      position: relative;
+      border-radius: 1.75rem;
+      background: rgba(10, 14, 24, 0.92);
+    }
+    .neon-border-box::before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border-radius: calc(1.75rem + 2px);
+      background: linear-gradient(90deg, #38bdf8, #6366f1, #a855f7, #ec4899, #10b981, #38bdf8);
+      background-size: 400% 400%;
+      animation: neonFlow 10s linear infinite;
+      z-index: -1;
+      opacity: 0.8;
+    }
+    @keyframes neonFlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Pulsing Scanner Radar Wave */
+    .radar-sweep-icon {
+      position: relative;
+    }
+    .radar-sweep-icon::after {
+      content: '';
+      position: absolute;
+      inset: -8px;
+      border-radius: 9999px;
+      border: 2px solid #38bdf8;
+      animation: radarPing 2.2s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+    }
+    @keyframes radarPing {
+      0% { transform: scale(0.8); opacity: 0.9; }
+      100% { transform: scale(2.6); opacity: 0; }
+    }
+
     /* Glassmorphism & Visual Polish */
     .glass-panel {
-      background: rgba(13, 17, 28, 0.75);
+      background: rgba(10, 14, 24, 0.76);
       backdrop-filter: blur(24px);
       -webkit-backdrop-filter: blur(24px);
       border: 1px solid var(--border-subtle);
@@ -65,13 +173,13 @@
       background: linear-gradient(145deg, rgba(19, 25, 41, 0.6) 0%, rgba(13, 17, 28, 0.8) 100%);
       backdrop-filter: blur(16px);
       border: 1px solid rgba(255, 255, 255, 0.06);
-      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .glass-card:hover {
-      border-color: rgba(56, 189, 248, 0.25);
-      transform: translateY(-2px);
-      box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.7), 0 0 15px -3px rgba(56, 189, 248, 0.1);
+      border-color: rgba(56, 189, 248, 0.35);
+      transform: translateY(-3px) scale(1.008);
+      box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.7), 0 0 25px -4px rgba(56, 189, 248, 0.15);
     }
 
     .glow-cyan {
@@ -87,10 +195,10 @@
     }
 
     .active-nav-item {
-      background: linear-gradient(90deg, rgba(56, 189, 248, 0.12) 0%, rgba(99, 102, 241, 0.03) 100%);
+      background: linear-gradient(90deg, rgba(56, 189, 248, 0.18) 0%, rgba(99, 102, 241, 0.05) 100%);
       border-left: 3px solid #38bdf8;
       color: #ffffff !important;
-      font-weight: 600;
+      font-weight: 700;
     }
 
     /* Terminal scanline */
@@ -474,12 +582,20 @@
   
   </style>
 </head>
-<body class="h-screen flex flex-col antialiased">
+<body class="h-screen flex flex-col antialiased relative overflow-hidden text-slate-100">
+
+  <!-- Animated Background Aurora & Cyber Grid -->
+  <div class="aurora-container">
+    <div class="aurora-blob-1"></div>
+    <div class="aurora-blob-2"></div>
+    <div class="aurora-blob-3"></div>
+  </div>
+  <div class="grid-matrix"></div>
 
   <!-- ========================================== -->
   <!-- 1. DESKTOP WINDOW TITLEBAR (Mac/Win Chrome) -->
   <!-- ========================================== -->
-  <header class="h-11 bg-[#090c14]/95 border-b border-slate-800/80 flex items-center justify-between px-4 text-xs z-50 select-none backdrop-blur-md">
+  <header class="h-12 bg-[#090c14]/90 border-b border-slate-800/80 flex items-center justify-between px-4 text-xs z-50 select-none backdrop-blur-md relative">
     <!-- Left: App Identity & Window Controls -->
     <div class="flex items-center space-x-3.5">
       <div class="flex items-center space-x-2">
@@ -497,6 +613,32 @@
         </a>
         <span class="text-slate-600">/</span>
         <span id="current-view-breadcrumb" class="text-slate-400 font-medium">Home</span>
+      </div>
+    </div>
+
+    <!-- Center: Interactive QA Mirror vs Live Production Switcher -->
+    <div class="hidden md:flex items-center gap-2 bg-slate-950/80 border border-slate-800 p-1 rounded-2xl shadow-inner">
+      <div class="flex items-center bg-[#07090e] p-0.5 rounded-xl border border-slate-800/80">
+        <button onclick="setWebEnv('qa')" id="header-env-qa" class="px-3 py-1 rounded-lg font-bold text-[11px] transition flex items-center gap-1.5 bg-purple-600 text-white shadow">
+          <span class="w-2 h-2 rounded-full bg-purple-300 animate-pulse"></span>
+          <span>🧪 QA Sandbox (Mirror)</span>
+        </button>
+        <button onclick="setWebEnv('prod')" id="header-env-prod" class="px-3 py-1 rounded-lg font-bold text-[11px] transition flex items-center gap-1.5 text-slate-400 hover:text-white">
+          <span class="w-2 h-2 rounded-full bg-slate-600"></span>
+          <span>🚀 Live Production</span>
+        </button>
+      </div>
+
+      <div class="flex items-center bg-[#07090e] p-0.5 rounded-xl border border-slate-800/80">
+        <button onclick="setWebRegion('all')" id="header-reg-all" class="px-2.5 py-1 rounded-lg font-bold text-[11px] transition bg-cyan-500 text-slate-950 shadow">
+          🌐 All
+        </button>
+        <button onclick="setWebRegion('india')" id="header-reg-india" class="px-2.5 py-1 rounded-lg font-bold text-[11px] transition text-slate-400 hover:text-white">
+          🇮🇳 India
+        </button>
+        <button onclick="setWebRegion('global')" id="header-reg-global" class="px-2.5 py-1 rounded-lg font-bold text-[11px] transition text-slate-400 hover:text-white">
+          🌍 Global
+        </button>
       </div>
     </div>
 
@@ -5286,6 +5428,52 @@ linkedin.com/in/rajesh-saindane`
           row.style.display = 'none';
         }
       });
+    }
+
+    let currentAppEnv = 'qa';
+    let currentAppRegion = 'all';
+
+    function setWebEnv(env) {
+      currentAppEnv = env;
+      const qaBtn = document.getElementById('header-env-qa');
+      const prodBtn = document.getElementById('header-env-prod');
+      const dryRunToggle = document.getElementById('qa-dry-run-toggle');
+      const heroPill = document.getElementById('autopilot-status-pill');
+      const heroText = document.getElementById('autopilot-status-text');
+
+      if (env === 'qa') {
+        if (qaBtn) qaBtn.className = "px-3 py-1 rounded-lg font-bold text-[11px] transition flex items-center gap-1.5 bg-purple-600 text-white shadow";
+        if (prodBtn) prodBtn.className = "px-3 py-1 rounded-lg font-bold text-[11px] transition flex items-center gap-1.5 text-slate-400 hover:text-white";
+        if (dryRunToggle) dryRunToggle.checked = true;
+        if (heroPill) heroPill.className = "px-3 py-1 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/40 text-xs font-bold flex items-center gap-1.5 shadow-sm";
+        if (heroText) heroText.innerText = "🧪 QA Sandbox Mirror Active (Safe Simulation)";
+        showLiveToast("QA Mirror Active 🧪", "Operating in safe sandbox mode with full DOM audit simulation.", "🧪");
+        appendTerminalLog("[ENVIRONMENT] Switched to 🧪 QA Sandbox Mirror (Dry-run active).");
+      } else {
+        if (prodBtn) prodBtn.className = "px-3 py-1 rounded-lg font-bold text-[11px] transition flex items-center gap-1.5 bg-emerald-500 text-slate-950 shadow";
+        if (qaBtn) qaBtn.className = "px-3 py-1 rounded-lg font-bold text-[11px] transition flex items-center gap-1.5 text-slate-400 hover:text-white";
+        if (dryRunToggle) dryRunToggle.checked = false;
+        if (heroPill) heroPill.className = "px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-xs font-bold flex items-center gap-1.5 shadow-sm";
+        if (heroText) heroText.innerText = "🚀 Live Production Active (Real Submissions)";
+        showLiveToast("Live Production Active 🚀", "Applications will be submitted to real portals on 1-Click.", "🚀");
+        appendTerminalLog("[ENVIRONMENT] Switched to 🚀 Live Production (Real submissions enabled).");
+      }
+    }
+
+    function setWebRegion(reg) {
+      currentAppRegion = reg;
+      const all = document.getElementById('header-reg-all');
+      const ind = document.getElementById('header-reg-india');
+      const glob = document.getElementById('header-reg-global');
+      if (all) all.className = "px-2.5 py-1 rounded-lg font-bold text-[11px] transition text-slate-400 hover:text-white";
+      if (ind) ind.className = "px-2.5 py-1 rounded-lg font-bold text-[11px] transition text-slate-400 hover:text-white";
+      if (glob) glob.className = "px-2.5 py-1 rounded-lg font-bold text-[11px] transition text-slate-400 hover:text-white";
+      
+      if (reg === 'all' && all) all.className = "px-2.5 py-1 rounded-lg font-bold text-[11px] transition bg-cyan-500 text-slate-950 shadow";
+      if (reg === 'india' && ind) ind.className = "px-2.5 py-1 rounded-lg font-bold text-[11px] transition bg-amber-500 text-slate-950 shadow";
+      if (reg === 'global' && glob) glob.className = "px-2.5 py-1 rounded-lg font-bold text-[11px] transition bg-indigo-500 text-white shadow";
+      
+      appendTerminalLog(`[REGION FILTER] Showing ${reg.toUpperCase()} openings (Naukri, LinkedIn, Instahyre, Indeed, Direct ATS).`);
     }
 
     function showAddQAModal() {
