@@ -14,9 +14,9 @@ class TestPhase2(unittest.TestCase):
                 self.assertIsNotNone(page)
 
                 # Test navigation to a simple fast page
-                page.goto("data:text/html,<html><head><title>JobPilot Test</title></head><body><h1>JobPilot</h1></body></html>")
+                page.goto("data:text/html,<html><head><title>JobPlus AI Test</title></head><body><h1>JobPlus AI</h1></body></html>")
                 title = page.title()
-                self.assertEqual(title, "JobPilot Test")
+                self.assertEqual(title, "JobPlus AI Test")
 
                 # Test stealth presence (navigator.webdriver should be undefined or false)
                 is_webdriver = page.evaluate("navigator.webdriver")

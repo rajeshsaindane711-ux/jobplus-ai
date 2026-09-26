@@ -1,6 +1,8 @@
 venv/
 __pycache__/
 *.pyc
+*.log
+.env
 data/*.db
 data/screenshots/
 data/browser_profile/

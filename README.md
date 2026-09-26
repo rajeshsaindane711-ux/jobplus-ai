@@ -1,4 +1,4 @@
-# JobPilot AI 🚀
+# JobPlus AI 🚀
 Autonomous job search, application, and recruiter outreach engine for **Naukri** and **LinkedIn**.
 
 ---
@@ -38,6 +38,7 @@ Autonomous job search, application, and recruiter outreach engine for **Naukri**
 | `python main.py setup` | Interactive terminal wizard to configure your profile and search keywords |
 | `python main.py test-config` | Review current candidate profile and search settings |
 | `python main.py test-resume` | Test resume PDF extraction and job relevance match scoring |
+| `python main.py freshen-resume` | Generate yesterday-dated resume copy for profile freshness ranking |
 | `python main.py test-email` | Preview generated HR email outreach draft |
 | `python main.py login` | Launch browser to sign in to Naukri & LinkedIn once |
 | `python main.py check-session` | Verify active login status on both platforms |
@@ -59,4 +60,4 @@ To enable live email sending to HR contacts found in LinkedIn posts:
    $env:GMAIL_ADDRESS="your.email@gmail.com"
    $env:GMAIL_APP_PASSWORD="xxxx xxxx xxxx xxxx"
    ```
-*(If no password is set, JobPilot AI automatically runs in safe **Simulation / Preview mode** so you can inspect emails without sending).*
+*(If no password is set, JobPlus AI automatically runs in safe **Simulation / Preview mode** so you can inspect emails without sending).*

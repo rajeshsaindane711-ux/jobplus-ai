@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JobPlus AI - Live Sandbox Application Form</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @keyframes pulseSuccess {
+      0% { border-color: #10b981; box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+      70% { border-color: #10b981; box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+      100% { border-color: #10b981; box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+    }
+    .field-filled {
+      animation: pulseSuccess 1.5s ease-out;
+      border-color: #10b981 !important;
+      background-color: #064e3b20 !important;
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen p-8 flex items-center justify-center font-sans">
+
+  <div class="max-w-2xl w-full bg-slate-900 border border-slate-800 rounded-3xl p-8 shadow-2xl space-y-6">
+    
+    <!-- Header Banner -->
+    <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 flex items-center justify-center font-bold text-lg">
+          🏢
+        </div>
+        <div>
+          <h1 class="text-lg font-bold text-white">PhonePe Careers — Senior SRE (DevOps)</h1>
+          <p class="text-xs text-slate-400">Direct ATS Application Portal (Greenhouse / Lever Simulator)</p>
+        </div>
+      </div>
+      <span class="px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 text-xs font-bold flex items-center gap-1.5">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+        Playwright Live Session Active
+      </span>
+    </div>
+
+    <!-- Application Form -->
+    <form id="job-form" class="space-y-4" onsubmit="event.preventDefault();">
+      
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 mb-1">First Name *</label>
+          <input type="text" id="first_name" name="first_name" placeholder="Waiting for bot..." class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white transition focus:outline-none">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 mb-1">Last Name *</label>
+          <input type="text" id="last_name" name="last_name" placeholder="Waiting for bot..." class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white transition focus:outline-none">
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 mb-1">Email Address *</label>
+          <input type="email" id="email" name="email" placeholder="Waiting for bot..." class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white transition focus:outline-none">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 mb-1">Phone Number (with Country Code) *</label>
+          <input type="tel" id="phone" name="phone" placeholder="Waiting for bot..." class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white transition focus:outline-none">
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 mb-1">Current Company &amp; Designation *</label>
+          <input type="text" id="current_company" name="current_company" placeholder="Waiting for bot..." class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white transition focus:outline-none">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 mb-1">Total Relevant Experience *</label>
+          <input type="text" id="experience" name="experience" placeholder="Waiting for bot..." class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white transition focus:outline-none">
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 mb-1">Notice Period (Days) *</label>
+          <input type="text" id="notice_period" name="notice_period" placeholder="Waiting for bot..." class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white transition focus:outline-none">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 mb-1">Expected CTC (INR) *</label>
+          <input type="text" id="expected_ctc" name="expected_ctc" placeholder="Waiting for bot..." class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white transition focus:outline-none">
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-xs font-semibold text-slate-400 mb-1">Screening: Years of Experience with Kubernetes &amp; Kafka *</label>
+        <textarea id="screening_tech" name="screening_tech" rows="2" placeholder="Waiting for bot..." class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white transition focus:outline-none resize-none"></textarea>
+      </div>
+
+      <!-- Resume Attachment Box -->
+      <div id="resume-box" class="p-4 rounded-2xl border border-dashed border-slate-700 bg-slate-900/50 flex items-center justify-between transition">
+        <div class="flex items-center space-x-3">
+          <span class="text-2xl">📄</span>
+          <div>
+            <p class="text-xs font-bold text-white" id="resume-filename">DevOps_SRE_Master.pdf</p>
+            <p class="text-[10px] text-slate-400">PDF Attached • 95.0% ATS Keyword Alignment</p>
+          </div>
+        </div>
+        <span class="px-2.5 py-1 rounded-lg bg-emerald-500/10 text-emerald-400 text-[10px] font-bold border border-emerald-500/20" id="resume-status">
+          Attached ✓
+        </span>
+      </div>
+
+      <!-- Submit Simulation Bar -->
+      <div class="pt-3 border-t border-slate-800 flex items-center justify-between">
+        <div class="text-[11px] text-slate-400 flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+          <span id="bot-status">Bot is typing candidate verified details...</span>
+        </div>
+        <button id="submit-btn" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 font-black text-xs shadow-lg transition">
+          Submit Application
+        </button>
+      </div>
+
+    </form>
+
+  </div>
+
+</body>
+</html>

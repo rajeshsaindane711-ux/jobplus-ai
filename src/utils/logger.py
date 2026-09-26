@@ -4,7 +4,7 @@ from rich.logging import RichHandler
 
 console = Console(safe_box=True)
 
-def setup_logger(name: str = "JobPilot") -> logging.Logger:
+def setup_logger(name: str = "JobPlus AI") -> logging.Logger:
     """Configures and returns a rich logger."""
     logging.basicConfig(
         level=logging.INFO,
@@ -15,3 +15,4 @@ def setup_logger(name: str = "JobPilot") -> logging.Logger:
     return logging.getLogger(name)
 
 logger = setup_logger()
+log = logger

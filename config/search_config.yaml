@@ -1,4 +1,4 @@
-# JobPilot AI - Search Criteria & Operational Limits
+# JobPlus AI - Search Criteria & Operational Limits
 search:
   keywords:
     - "DevOps Engineer"
@@ -37,3 +37,24 @@ safety:
   max_delay_seconds: 6 # Maximum randomized delay
   headless: false # Run with visible browser
   take_screenshots_on_apply: true
+
+# Safety Guardrails & Blacklist Engine
+filters:
+  company_blacklist:
+    - "DGLiger Consulting" # Current Employer - Critical Guardrail
+    - "DGLiger"
+    - "CyberCoders"
+    - "Revature"
+  keyword_blacklist:
+    - "Intern"
+    - "Internship"
+    - "Unpaid"
+    - "US Citizen Only"
+    - "Security Clearance"
+    - "Director"
+    - "VP of"
+    - "12+ Years"
+  min_salary_lpa: 12.0 # Minimum salary threshold
+  max_experience_years: 8.0 # Skip over-senior roles
+  min_glassdoor_rating: 3.5
+

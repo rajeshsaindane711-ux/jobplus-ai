@@ -12,7 +12,7 @@ class TestPhase3(unittest.TestCase):
         self.profile = load_profile()
         self.search_cfg = load_search_config()
         self.tmpdir = tempfile.TemporaryDirectory()
-        self.db_path = Path(self.tmpdir.name) / "test_jobpilot.db"
+        self.db_path = Path(self.tmpdir.name) / "test_jobplus.db"
         self.tracker = DatabaseTracker(self.db_path)
 
     def tearDown(self):

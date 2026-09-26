@@ -126,7 +126,7 @@ def cmd_setup(args):
     import yaml
     from src.config import CONFIG_DIR, load_profile, load_search_config
 
-    console.print("\n[bold cyan]═══════════════════ JobPilot AI Configuration Wizard ═══════════════════[/bold cyan]")
+    console.print("\n[bold cyan]═══════════════════ JobPlus AI Configuration Wizard ═══════════════════[/bold cyan]")
     console.print("[dim]Press Enter to keep the current/default value shown in [brackets].[/dim]\n")
 
     profile = load_profile()
@@ -381,7 +381,7 @@ def cmd_run_all(args):
 
 def main():
     display_banner()
-    parser = argparse.ArgumentParser(description="JobPilot AI - Autonomous Job Application Engine")
+    parser = argparse.ArgumentParser(description="JobPlus AI - Autonomous Job Application Engine")
     subparsers = parser.add_subparsers(dest="command", help="Available subcommands")
 
     # setup
