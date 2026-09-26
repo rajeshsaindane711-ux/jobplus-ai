@@ -28,6 +28,7 @@ from pydantic import BaseModel
 
 from src.config import CONFIG_DIR, load_profile, load_search_config
 from src.database import DatabaseTracker
+from src.utils.ai_copilot import AICareerCopilot
 
 BASE_DIR = Path(__file__).parent.resolve()
 DATA_DIR = BASE_DIR / "data"
@@ -35,6 +36,28 @@ QA_FILE = DATA_DIR / "learned_qa.json"
 HTML_UI_PATH = BASE_DIR / "ui_mockup.html"
 
 app = FastAPI(title="JobPlus AI Production Server", version="1.0.0")
+
+class ATSScoreRequest(BaseModel):
+    resume_text: str
+    job_description: str
+
+class CoverLetterRequest(BaseModel):
+    candidate_name: str = "Rajesh Saindane"
+    position: str = "Senior SRE / DevOps Engineer"
+    company: str = "PhonePe"
+    experience_years: float = 5.0
+    notice_period: str = "30 Days"
+    job_description: str = ""
+
+class OutreachRequest(BaseModel):
+    candidate_name: str = "Rajesh Saindane"
+    recruiter_name: str = "Hiring Manager"
+    company: str = "PhonePe"
+    position: str = "Senior SRE"
+
+class BulletOptimizeRequest(BaseModel):
+    raw_bullet: str
+    target_tech: str = "kubernetes"
 
 app.add_middleware(
     CORSMiddleware,
@@ -182,6 +205,47 @@ async def get_applications(limit: int = 50):
     tracker = DatabaseTracker()
     records = tracker.get_recent_applications(limit=limit)
     return records
+
+# ─────────────────────────────────────────────────────────────────
+# AI CAREER COPILOT ROUTES (FREE GEMINI 2.0 FLASH + OFFLINE)
+# ─────────────────────────────────────────────────────────────────
+
+@app.post("/api/ai/ats-score")
+async def calculate_ats_score(req: ATSScoreRequest):
+    """Calculates real-time ATS match percentage and keywords."""
+    copilot = AICareerCopilot()
+    return copilot.analyze_ats_match(req.resume_text, req.job_description)
+
+@app.post("/api/ai/cover-letter")
+async def generate_cover_letter(req: CoverLetterRequest):
+    """Generates natural human-written cover letter tailored to role."""
+    copilot = AICareerCopilot()
+    letter = copilot.generate_cover_letter(
+        candidate_name=req.candidate_name,
+        position=req.position,
+        company=req.company,
+        experience_years=req.experience_years,
+        notice_period=req.notice_period,
+        job_description=req.job_description
+    )
+    return {"cover_letter": letter}
+
+@app.post("/api/ai/outreach")
+async def generate_outreach(req: OutreachRequest):
+    """Generates 3-touch recruiter email campaign."""
+    copilot = AICareerCopilot()
+    return copilot.generate_outreach_sequence(
+        candidate_name=req.candidate_name,
+        recruiter_name=req.recruiter_name,
+        company=req.company,
+        position=req.position
+    )
+
+@app.post("/api/ai/bullet-optimize")
+async def optimize_bullet(req: BulletOptimizeRequest):
+    """Rewrites passive bullets into Google X-Y-Z quantified achievements."""
+    copilot = AICareerCopilot()
+    return copilot.optimize_resume_bullet(req.raw_bullet, req.target_tech)
 
 @app.websocket("/ws/logs")
 async def websocket_logs(websocket: WebSocket):
