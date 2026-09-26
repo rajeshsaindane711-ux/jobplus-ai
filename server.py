@@ -29,6 +29,7 @@ from pydantic import BaseModel
 from src.config import CONFIG_DIR, load_profile, load_search_config
 from src.database import DatabaseTracker
 from src.utils.ai_copilot import AICareerCopilot
+from src.platforms.job_finder import JobFinderEngine
 
 BASE_DIR = Path(__file__).parent.resolve()
 DATA_DIR = BASE_DIR / "data"
@@ -246,6 +247,28 @@ async def optimize_bullet(req: BulletOptimizeRequest):
     """Rewrites passive bullets into Google X-Y-Z quantified achievements."""
     copilot = AICareerCopilot()
     return copilot.optimize_resume_bullet(req.raw_bullet, req.target_tech)
+
+# ─────────────────────────────────────────────────────────────────
+# MULTI-PLATFORM JOB RADAR ROUTES (STEP 3)
+# ─────────────────────────────────────────────────────────────────
+
+@app.get("/api/jobs/radar")
+async def get_radar_jobs(min_match: float = 85.0, limit: int = 50):
+    """Returns queued matched jobs from SQLite database."""
+    tracker = DatabaseTracker()
+    return tracker.get_matched_jobs(min_match=min_match, limit=limit)
+
+@app.post("/api/jobs/scan")
+async def trigger_job_scan():
+    """Triggers an on-demand multi-platform scan and stores matches in database."""
+    engine = JobFinderEngine()
+    results = engine.scan_and_sync_all_platforms()
+    await manager.broadcast({
+        "type": "log",
+        "level": "INFO",
+        "message": f"[JOB RADAR] Scan complete: {results['total_discovered']} discovered, {results['total_qualified']} qualified, {results['total_skipped']} filtered out."
+    })
+    return results
 
 @app.websocket("/ws/logs")
 async def websocket_logs(websocket: WebSocket):
