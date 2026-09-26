@@ -350,25 +350,21 @@ async def apply_batch_jobs(req: ApplyBatchRequest):
 @app.post("/api/apply/live-demo")
 async def launch_live_browser_demo():
     """Launches a real visible Chrome/Chromium window on your desktop to demonstrate live form-filling."""
-    from scripts.test_live_browser import run_live_browser_demo
+    import subprocess
+    script_path = str(BASE_DIR / "scripts" / "test_live_browser.py")
     await manager.broadcast({
         "type": "log",
         "level": "INFO",
-        "message": "[LIVE DEMO] 🚀 Launching real visible Chromium window on your desktop screen..."
+        "message": "[LIVE DEMO] 🚀 Launching visible Chromium browser window on your Windows desktop..."
     })
     try:
-        run_live_browser_demo()
-        await manager.broadcast({
-            "type": "log",
-            "level": "INFO",
-            "message": "[LIVE DEMO] ✓ Live form filling demonstration completed successfully!"
-        })
-        return {"status": "success", "message": "Live browser demonstration completed."}
+        proc = subprocess.Popen([sys.executable, script_path], cwd=str(BASE_DIR))
+        return {"status": "success", "message": "Live browser window launched on your desktop!", "pid": proc.pid}
     except Exception as e:
         await manager.broadcast({
             "type": "log",
             "level": "ERROR",
-            "message": f"[LIVE DEMO] Error: {str(e)}"
+            "message": f"[LIVE DEMO] Error launching browser window: {str(e)}"
         })
         return {"status": "error", "message": str(e)}
 
