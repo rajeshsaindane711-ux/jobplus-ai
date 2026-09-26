@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional, Union
 import yaml
 from pydantic import BaseModel, Field
 
@@ -72,20 +72,29 @@ class AppSearchConfig(BaseModel):
     platforms: Dict[str, PlatformConfig]
     safety: SafetyConfig
 
-def load_profile(path: Optional[Path] = None) -> ProfileConfig:
+def load_profile(path: Optional[Any] = None) -> ProfileConfig:
     """Loads and validates candidate profile from YAML."""
-    file_path = path or (CONFIG_DIR / "profile.yaml")
+    file_path = Path(path).resolve() if path else (CONFIG_DIR / "profile.yaml")
     if not file_path.exists():
         raise FileNotFoundError(f"Profile config not found at: {file_path}")
     with open(file_path, "r", encoding="utf-8") as f:
         data = yaml.safe_load(f)
     return ProfileConfig(**data)
 
-def load_search_config(path: Optional[Path] = None) -> AppSearchConfig:
+def load_search_config(path: Optional[Any] = None) -> AppSearchConfig:
     """Loads and validates job search configuration from YAML."""
-    file_path = path or (CONFIG_DIR / "search_config.yaml")
+    file_path = Path(path).resolve() if path else (CONFIG_DIR / "search_config.yaml")
     if not file_path.exists():
         raise FileNotFoundError(f"Search config not found at: {file_path}")
     with open(file_path, "r", encoding="utf-8") as f:
         data = yaml.safe_load(f)
     return AppSearchConfig(**data)
+
+def load_safety_config(path: Optional[Any] = None) -> SafetyConfig:
+    """Loads safety configuration from search_config.yaml or returns default."""
+    try:
+        search_cfg = load_search_config(path)
+        return search_cfg.safety
+    except Exception:
+        return SafetyConfig()
+

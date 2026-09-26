@@ -134,30 +134,40 @@ class DatabaseTracker:
     # APPLICATION OPERATIONS
     # ─────────────────────────────────────────────────────────────────
 
-    def is_applied(self, platform: str, job_id: str) -> bool:
-        """Checks if a job has already been applied to."""
+    def is_applied(self, platform_or_id: str, job_id: Optional[str] = None) -> bool:
+        """Checks if a job has already been applied to (supports platform+job_id or direct url/id)."""
         with self._get_connection() as conn:
             cursor = conn.cursor()
-            cursor.execute(
-                "SELECT 1 FROM applications WHERE platform = ? AND job_id = ? AND status = 'applied'",
-                (platform.lower(), str(job_id)),
-            )
+            if job_id is not None:
+                cursor.execute(
+                    "SELECT 1 FROM applications WHERE platform = ? AND job_id = ? AND status = 'applied'",
+                    (platform_or_id.lower(), str(job_id)),
+                )
+            else:
+                cursor.execute(
+                    "SELECT 1 FROM applications WHERE (job_id = ? OR url = ?) AND status = 'applied'",
+                    (str(platform_or_id), str(platform_or_id)),
+                )
             return cursor.fetchone() is not None
 
     def record_application(
         self,
         platform: str,
         job_id: str,
-        title: str,
-        company: str,
+        title: str = "DevOps Engineer",
+        company: str = "Target Company",
         location: str = "",
         url: str = "",
         status: str = "applied",
         resume_used: str = "DevOps_SRE_Master.pdf",
         notes: str = "",
         screenshot_path: str = "",
+        job_title: Optional[str] = None,
+        match_score: Optional[float] = None,
+        **kwargs: Any,
     ) -> bool:
-        """Records a completed job application with proof screenshot."""
+        """Records a completed or flagged job application with proof screenshot."""
+        final_title = job_title or title
         try:
             with self._get_connection() as conn:
                 conn.execute(
@@ -334,6 +344,8 @@ class DatabaseTracker:
             logger.error(f"Failed to save QA item {key}: {e}")
             return False
 
+    save_qa_answer = save_qa_item
+
     def get_all_qa_items(self) -> List[Dict[str, Any]]:
         """Returns all knowledge bank entries."""
         with self._get_connection() as conn:
@@ -403,3 +415,15 @@ class DatabaseTracker:
                 "discovered_jobs": discovered_count,
                 "by_platform": by_platform,
             }
+
+_default_tracker = None
+
+def get_db_tracker(db_path: Optional[Path] = None, qa_path: Optional[Path] = None) -> DatabaseTracker:
+    """Returns a singleton or configured instance of DatabaseTracker."""
+    global _default_tracker
+    if db_path is not None or qa_path is not None:
+        return DatabaseTracker(db_path=db_path, qa_path=qa_path)
+    if _default_tracker is None:
+        _default_tracker = DatabaseTracker()
+    return _default_tracker
+

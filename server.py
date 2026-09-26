@@ -10,7 +10,7 @@ import logging
 import os
 import sys
 from pathlib import Path
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Optional
 
 # Reconfigure stdout for Windows UTF-8
 if sys.platform == "win32":
@@ -27,9 +27,25 @@ from fastapi.responses import HTMLResponse, FileResponse
 from pydantic import BaseModel
 
 from src.config import CONFIG_DIR, load_profile, load_search_config
-from src.database import DatabaseTracker
+from src.database import DatabaseTracker, get_db_tracker
 from src.utils.ai_copilot import AICareerCopilot
 from src.platforms.job_finder import JobFinderEngine
+from src.platforms.form_filler import AutonomousFormFiller
+
+class ApplyJobRequest(BaseModel):
+    company: str
+    url: str
+    title: str = "DevOps Engineer"
+    cover_letter: Optional[str] = None
+    dry_run: bool = False
+
+class ApplyBatchRequest(BaseModel):
+    jobs: Optional[List[Dict[str, Any]]] = None
+    dry_run: bool = False
+
+class ResolveReviewRequest(BaseModel):
+    review_id: str
+    answer: str
 
 BASE_DIR = Path(__file__).parent.resolve()
 DATA_DIR = BASE_DIR / "data"
@@ -269,6 +285,93 @@ async def trigger_job_scan():
         "message": f"[JOB RADAR] Scan complete: {results['total_discovered']} discovered, {results['total_qualified']} qualified, {results['total_skipped']} filtered out."
     })
     return results
+
+# ─────────────────────────────────────────────────────────────────
+# AUTONOMOUS FORM-FILLER & CIRCUIT BREAKER ROUTES (STEP 4)
+# ─────────────────────────────────────────────────────────────────
+
+@app.post("/api/apply/job")
+async def apply_single_job(req: ApplyJobRequest):
+    """Applies to a single job via Autonomous Form-Filler with Circuit Breaker."""
+    filler = AutonomousFormFiller()
+    await manager.broadcast({
+        "type": "log",
+        "level": "INFO",
+        "message": f"[AUTO APPLY] Starting submission for {req.company} - {req.title} (DryRun: {req.dry_run})"
+    })
+    result = filler.fill_and_submit_direct_ats(
+        company=req.company,
+        job_url=req.url,
+        role=req.title,
+        cover_letter=req.cover_letter,
+        dry_run=req.dry_run
+    )
+    status_label = result.get("status", "unknown").upper()
+    await manager.broadcast({
+        "type": "log",
+        "level": "INFO" if status_label in ["APPLIED", "DRY_RUN_SUCCESS", "SIMULATED"] else "WARNING",
+        "message": f"[AUTO APPLY] {req.company} -> {status_label}"
+    })
+    return result
+
+@app.post("/api/apply/batch")
+async def apply_batch_jobs(req: ApplyBatchRequest):
+    """Executes 1-Click Autonomous Batch Application across matched jobs."""
+    filler = AutonomousFormFiller()
+    tracker = DatabaseTracker()
+
+    jobs_to_apply = req.jobs
+    if not jobs_to_apply:
+        # Pull top matched jobs from radar
+        jobs_to_apply = tracker.get_matched_jobs(min_match=85.0, limit=20)
+
+    await manager.broadcast({
+        "type": "log",
+        "level": "INFO",
+        "message": f"[1-CLICK BATCH] Starting automated batch application for {len(jobs_to_apply)} jobs..."
+    })
+
+    result = filler.process_batch(jobs_to_apply, dry_run=req.dry_run)
+
+    await manager.broadcast({
+        "type": "log",
+        "level": "INFO",
+        "message": f"[1-CLICK BATCH] Batch complete: Applied={result['applied']}, Skipped={result['skipped']}, CircuitBreaks={result['circuit_broken']}"
+    })
+    return result
+
+@app.get("/api/apply/review-queue")
+async def get_review_queue():
+    """Returns all questions pending human verification."""
+    filler = AutonomousFormFiller()
+    queue = filler.verifier.review_queue
+    pending = [item for item in queue if item.get("status") == "PENDING_USER_INPUT"]
+    return {"pending_count": len(pending), "items": pending}
+
+@app.post("/api/apply/review-queue/resolve")
+async def resolve_review_question(req: ResolveReviewRequest):
+    """Resolves an enqueued question, updates QA memory bank, and allows auto-resume."""
+    filler = AutonomousFormFiller()
+    success = filler.resolve_review_item(req.review_id, req.answer)
+    await manager.broadcast({
+        "type": "log",
+        "level": "INFO",
+        "message": f"[KNOWLEDGE BASE] Learned answer for '{req.review_id}' -> '{req.answer}'"
+    })
+    return {"success": success, "review_id": req.review_id, "answer": req.answer}
+
+@app.get("/api/qa/all")
+async def get_all_qa():
+    """Returns all stored questions and answers from knowledge bank."""
+    tracker = DatabaseTracker()
+    return tracker.get_all_qa_items()
+
+@app.get("/api/applications/recent")
+async def get_recent_applications(limit: int = 50):
+    """Returns recent applications with status, platform, and timestamps."""
+    tracker = DatabaseTracker()
+    return tracker.get_recent_applications(limit=limit)
+
 
 @app.websocket("/ws/logs")
 async def websocket_logs(websocket: WebSocket):

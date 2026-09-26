@@ -21,5 +21,6 @@
   "graduation_year": "2021",
   "gender_disclosure": "Prefer not to disclose / Male",
   "disability_status": "No, I do not have a disability",
-  "veteran_status": "Not a veteran"
+  "veteran_status": "Not a veteran",
+  "Do you have hands-on experience configuring Kafka Schema Registry?": "Yes, 3+ years managing Avro schemas and Confluent Schema Registry."
 }
